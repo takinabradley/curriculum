@@ -282,6 +282,16 @@ This idea of grouping related functionality within an object is *extremely power
 
 Furthermore, with the various object creation methods you'll learn throughout this section of the curriculum, you'll be able to easily duplicate and reuse objects like these! Imagine you have a website where users can create and play *multiple* rock-paper-scissor games at once. Managing the data and interacting with each of those games would be no sweat with objects!
 
-### Object Inheritance
+<div class="lesson-note lesson-note--tip" markdown="1">
 
-### Prototypical Inheritance In JavaScript
+#### Objects As Machines
+  
+When you want to organize some data and functionality together in this way, but you're having trouble figuring out what kinds of properties and methods an object might contain when it's not an actual, physical item, another way you might conceptualize this idea might be to imagine each object as a little 'machine' you're making out of code that does something useful.
+
+The properties of the object might have basic information about your machine (like it's color), and additional information about it's current 'state', such as if the machine is currently on or off, what the machine has counted for a player's score, or how many coins havebeen inserted into your machine.
+
+The buttons and and such that make your machine do specific things would be represented by the the objects methods. A method might turn your machine from on 'on' to 'off', allow you to input information to play a game, or give the machine a coin so it can keep running (maybe your object represents an arcade game!).
+
+Again, objects can be used to represent almost anything you can think of, the limit is your imagination! It's impossible for us to give a comprehensive list of examples.
+
+</div>
