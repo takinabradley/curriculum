@@ -43,8 +43,6 @@ This section contains a general overview of topics that you will learn in this l
 - Using objects to organize data.
 - Using objects to organize functionality.
 - Object methods and the `this` keyword
-- Object Inheritance
-- Prototypical Inheritance in JavaScript
 
 ### Objects as a data structure
 
