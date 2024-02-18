@@ -295,3 +295,28 @@ The buttons and and such that make your machine do specific things would be repr
 Again, objects can be used to represent almost anything you can think of, the limit is your imagination! It's impossible for us to give a comprehensive list of examples.
 
 </div>
+
+### Assignment
+
+<div class="lesson-content__panel" markdown="1">
+
+1. [Dmitri Pavlutin's article on the `this` keyword](https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/) is very comprehensive and covers how `this` changes in various situations. You should have a solid understanding of the concept after reading it. Pay special attention to the pitfalls mentioned in each section.
+**Read only up to section 3.1**, and don't worry about anything related to 'inheritance', the 'prototype', `Object.create`, or classes.
+
+</div>
+
+### Knowledge check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- [What are two ways you can use objects to organize code?](#objects-as-a-data-structure)
+- [What is a 'method'?](#objects-as-a-design-pattern)
+- [What is the `this` keyword used for?](#objects-as-a-design-pattern)
+
+### Additional resources
+
+This section contains helpful links to related content. It isn't required, so consider it supplemental.
+
+- [The Principles of Object-Oriented JavaScript](https://www.amazon.com/Principles-Object-Oriented-JavaScript-Nicholas-Zakas/dp/1593275404) book by
+Nicholas C. Zakas is really great to understand OOP in JavaScript, which explains concepts in-depth, which explores JavaScript's object-oriented nature, revealing the language's unique implementation of inheritance and other key characteristics, it's not free but it's very valuable.
+- Check out this [video explanation](https://www.youtube.com/watch?v=cwChC4BQF0Q) on the `this` keyword from DevSage that gives a different perspective on how its context changes, as well as scenarios in which `this` behaves unexpectedly.
