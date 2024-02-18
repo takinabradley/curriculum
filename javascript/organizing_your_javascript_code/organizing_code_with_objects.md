@@ -220,7 +220,7 @@ rps.reset()
 
 You may be looking at this code and thinking that you personally prefer to split your code between more functions than you see here, but also recognize that those functions may not really be a useful interaction point for anyone using your object.
 
-But, there is no rule saying that you can't add those functions to your object as well! A common convention is to prefix methods that you don't intend other people to use with an underscore (`_`). This convention conveys to others that "These things are meant to be used internally by this object, please interact with the other available methods and properties on this object's interface instead".
+But, there is no rule saying that you can't add those functions to your object as well! A common convention is to prefix methods and properties that you don't intend other people to use with an underscore (`_`). This convention conveys to others that "These things are meant to be used internally by this object, please interact with the other available methods and properties on this object's interface instead".
 
 Let's see what that looks like!
 
@@ -272,11 +272,11 @@ const rps = {
 }
 ```
 
-These methods might also be called "private methods"/"private properties", and even though **object literal** syntax doesn't provide a way to truly make them private, you will later learn about other methods of creating objects that *can*.
+Another name for these might also be **private properties**/**private methods**, and even though object literal syntax doesn't provide a way to truly make them private, you will later learn about other methods of creating objects that *can*.
 
-Private properties aren't strictly required, but they can help make the intended use of the object more understandable, and when used thoughtfully, even protect certain properties from being modified in ways that you may not have intended.
+Private properties/methods aren't strictly required, but they can help make the intended use of the object more understandable, and when used thoughtfully, even protect certain properties from being modified in ways that you may not have intended.
 
-The methods and properties you *do* intend for others to use on your objects might be considered your object's "public interface". Having a good, well thought out interface on your objects is important- not only because it makes your object pleasant to use by you and others, but also to keep objects flexible and extensible in the future (we'll touch on this later, when we talk about object inheritance).
+The methods and properties you *do* intend for others to use on your objects might be considered your object's **public interface**. Having a good, well thought out interface on your objects is important- not only because it makes your object pleasant to use by you and others, but also to keep objects flexible and extensible in the future (we'll touch on this later, when we talk about object inheritance).
 
 This idea of grouping related functionality within an object is *extremely powerful*, and can often result in more organized, understandable code.
 
