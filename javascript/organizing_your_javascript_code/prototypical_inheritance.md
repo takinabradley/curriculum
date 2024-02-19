@@ -20,11 +20,15 @@ This section contains a general overview of topics that you will learn in this l
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
+---
+
 #### Confusion Point
 
 The way that many people use the term 'inheritance' often stems from backgrounds in languages that create and manage these relationships differently than JavaScript, often with the idea of "Classes". JavaScript didn't have any concept of a "Class" until it's 2015 standard, and it wasn't widely supported until 2016. Under the hood, classes in JS *still use* JavaScript's mechanism of "Prototypical Inheritance", which you'll learn about shortly, and it's important to understand how it works.
 
 If you've been exposed to the concepts of "Classical Inheritance" before, try to keep an open mind! JavaScript's prototypical inheritance model is pretty cool!
+
+---
 
 </div>
 
@@ -82,11 +86,15 @@ You cannot access the `[[Prototype]]` property of objects directly in JavaScript
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
+---
+
 #### Object.getPrototypeOf() vs. .\_\_proto__ vs. \[\[Prototype]]
 
 Use `Object.getPrototypeOf()` to access an object’s prototype. You may have seen that the same thing can also be done using the `.__proto__` property of an object. However, this is a non-standard way of doing so, and deprecated.
 
 `[[Prototype]]` and `.__proto__` are both commonly used to refer internal/private `[[Prototype]]` property of an object in conversation, but `someObject.[[Prototype]]` is the notation that is used in the ECMAScript standard and should be preferred.
+
+---
 
 </div>
 
@@ -94,11 +102,15 @@ Use `Object.getPrototypeOf()` to access an object’s prototype. You may have se
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
+---
+
 #### Demonstration
 
 It is generally not recommended to *change* the prototype of individual objects willy-nilly like this after they have been created. The following code is being used strictly as a bare-bones demonstration of how prototypical inheritance in JavaScript works.
 
 We'll soon cover how to use `Object.create` to instantiate (or create), objects with their prototype already in-place.
+
+---
 
 </div>
 
