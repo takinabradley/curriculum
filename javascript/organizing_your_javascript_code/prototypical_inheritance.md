@@ -8,16 +8,6 @@ The term **Object Inheritance** describes common methods in which the interfaces
 
 Inheritance allows you to *utilize the existing functionality objects you already have* when creating new or similar ones. This can open up some neat organizational and code re-use strategies.
 
-<div class="lesson-note lesson-note--warning" markdown="1">
-
-#### Confusion Point
-
-The way that many people use the term 'inheritance' often stems from backgrounds in languages that create and manage these relationships differently than JavaScript, often with the idea of "Classes". JavaScript didn't have any concept of a "Class" until it's 2015 standard, and it wasn't widely supported until 2016. Under the hood, classes in JS *still use* JavaScript's mechanism of "Prototypical Inheritance", which you'll learn about shortly, and it's important to understand how it works.
-
-If you've been exposed to the concepts of "Classical Inheritance" before, try to keep an open mind! JavaScript's prototypical inheritance model is pretty cool!
-
-</div>
-
 ### Lesson overview
 
 This section contains a general overview of topics that you will learn in this lesson.
@@ -28,13 +18,23 @@ This section contains a general overview of topics that you will learn in this l
 
 ### Prototypical Inheritance in JavaScript
 
-JavaScript has a pretty unique method of implementing inheritance, called **Prototypical Inheritance**. The primary idea behind Prototypical Inheritance that makes it different from how other languages manage inheritance is the ability inherit properties and methods from *real, existing objects* in your code.
+<div class="lesson-note lesson-note--warning" markdown="1">
 
-Other languages often require you to write a "Class", or a declaration of all the properties and methods that might appear on a 'type' of object, before you're ever able to create one. You also have to specify if a Class inherits from any other Class. This is **not** the case in JavaScript. In JavaScript, you can create objects *on the fly*, anywhere, any time.
+#### Confusion Point
+
+The way that many people use the term 'inheritance' often stems from backgrounds in languages that create and manage these relationships differently than JavaScript, often with the idea of "Classes". JavaScript didn't have any concept of a "Class" until it's 2015 standard, and it wasn't widely supported until 2016. Under the hood, classes in JS *still use* JavaScript's mechanism of "Prototypical Inheritance", which you'll learn about shortly, and it's important to understand how it works.
+
+If you've been exposed to the concepts of "Classical Inheritance" before, try to keep an open mind! JavaScript's prototypical inheritance model is pretty cool!
+
+</div>
+
+JavaScript has a pretty unique method of implementing inheritance, called **Prototypical Inheritance**. The primary idea behind Prototypical Inheritance that makes it different from how other languages might manage inheritance is the ability inherit properties and methods from other *real, existing objects* in your code.
+
+Other languages often require you to write a "Class", or a declaration of all the properties and methods that might appear on a 'type' of object, before you're ever able to create one. You might also have to specify if a Class inherits from any other Class at that time. This is **not** the case in JavaScript. In JavaScript, you can create objects *on the fly*, anywhere, any time.
 
 Instead of making you specify how your objects inherit from other objects up front, JavaScript allows you to manage this through something it calls the **Prototype Chain**. The Prototype Chain allows you to 'link' any object you want to an arbitrary parent object. By linking the objects together, the 'child' object will have access to the properties and methods of the parent.
 
-When doing this, the parent object is often reffered to as the child's **Prototype Object**, or **prototype** for short. Each object can inherit from only one parent, though that 'parent' object can also inherit from *it's own* prototype, forming a 'chain' of inheritance that might look somtheing like so:
+When doing this, the parent object is often reffered to as the child's **Prototype Object**, or **prototype** for short. Each object can inherit from only one parent, though that 'parent' object can also inherit from *it's own* prototype, forming a 'chain' of inheritance that might look sometheing like so:
 
 ```txt
 Grandparent Object -> Parent Object -> Child Object
@@ -82,9 +82,9 @@ You cannot access the `[[Prototype]]` property of objects directly in JavaScript
 
 <div class="lesson-note lesson-note--warning" markdown="1">
 
-#### Object.getPrototypeOf() vs. .**proto** vs. \[\[Prototype]]
+#### Object.getPrototypeOf() vs. .\_\_proto__ vs. \[\[Prototype]]
 
-Use Object.getPrototypeOf() to access an object’s prototype. You may have seen that the same thing can also be done using the `.__proto__` property of an object. However, this is a non-standard way of doing so, and deprecated.
+Use `Object.getPrototypeOf()` to access an object’s prototype. You may have seen that the same thing can also be done using the `.__proto__` property of an object. However, this is a non-standard way of doing so, and deprecated.
 
 `[[Prototype]]` and `.__proto__` are both commonly used to refer internal/private `[[Prototype]]` property of an object in conversation, but `someObject.[[Prototype]]` is the notation that is used in the ECMAScript standard and should be preferred.
 
@@ -141,20 +141,20 @@ Object {  }
 
 You may notice that the `greet` method said the name of the `child` object, and not the `parent`! There is a couple reasons for this:
 
-- The object the `this` keyword points to *depends on the object a method is called from*. This is not a problem, and it's actually ***really*** useful functionality.
-- When looking up a property on an object, the JavaScript engine starts with your object before searching upwards in the prototype chain, one object at a time. The first property with the name you're searching for will be given to you.
+- The object the `this` keyword points to *depends on the object a method is called from*. This is not a problem, and it's actually *really* useful functionality!
+- When looking up a property on an object, the JavaScript engine starts looking for the property on the object you are accessing before searching upwards in the prototype chain, one object at a time. The first property with the name you're searching for will be given to you.
 
-The prototype chain for our object looks like this, with the objects considered 'highest' or near the 'top' of the chain towards on the right:
+The prototype chain for our object looks like this, with the objects considered 'highest' or near the 'top' of the chain towards on the left:
 
 ```txt
-Object.prototype -> parent -> child 
+null (end of chain) -> Object.prototype -> parent -> child 
 ```
 
-So that means that any property you try to access will first be searched for on `child`, then `parent`, and finally `Object.prototype`. If the property doesn't exist on any of those objects, then you will recieve `undefined`.
+So that means that any property you try to access will first be searched for on the object you're accessing- in this case the `child`, then `parent`, and finally `Object.prototype`. If the property doesn't exist on any of those objects, JavaScript will regognize that the chain has ended and you will recieve `undefined`.
 
-### Assigning properties and prototype chain
+### Assigning properties to objects
 
-When using the assignment operator (`=`) to assign a value to an object's property, the key/value pair will *always* be assigned to the object you're using, and not on any other object in the prototype chain.
+When using the assignment operator (`=`) to assign a value to an object's property, the key/value pair will *always* be assigned to the object reference you're assigning to, and not on any other object in the prototype chain.
 
 This is useful, because often you'll want *many* objects to inherit from a prototype object, and you wouldn't want it to accidentally get modified.
 
@@ -165,17 +165,20 @@ const parent = {
 
 const child = {}
 
+Object.setPrototypeOf(child, parent)
 child.name // ''
 child.name = 'child' // a 'name' property gets added to the child
 child.name // 'child'
 parent.name // '' -- The prototype object has not been modified
 ```
 
+With the ending of this section, we've covered fundamental way that inheritance works in JavaScript. Really, that's all there is to it! Before you move on, we encourage you to play around with with the idea, and experiment with how it works, and take a breather if you need it.
+
 ### Creating and inheriting with Object.create and Object.assign
 
 [`Object.create`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create) is a method used to... well... create a new object, using an existing object as it's prototype. Essentially, it combines the object creating process and setting of the prototype into one, simple step.
 
-Object.create is a great first way to start creating duplicate objects of a specific 'type' in JavaScript, via prototypical inheritance.
+Object.create is a great first way to start creating multiples of objects of a specific 'type' in JavaScript, via prototypical inheritance.
 
 Let's go back to our `lightbulb` object from the previous lesson, and explore how we might start doing something *useful* with inheritance.
 
@@ -201,6 +204,7 @@ Let's say this lightbulb is a basic type of object we know we'll want to use oft
 That's super easy to do with `Object.create`:
 
 ```js
+// newBulb is an empty object that has lightbulb as it's prototype object
 let newBulb = Object.create(lightbulb)
 
 // we inherit the properties of lightbulb!
@@ -209,7 +213,7 @@ newBulb.switchOn() // true
 newBulb.lit // true
 ```
 
-You'll might notice, upon inspection, that the `switchOn` method adds a `lit` property to our `newBulb` object with the value of `true`- but it *doesn't* change the value of the prototype we're inheriting from. That's great, because it means we can make as many individual lightbulbs as we'd like without effecting the object we're inheriting from!
+You'll might notice, upon inspection, that the `switchOn` method adds a `lit` property to our previously empty `newBulb` object with the value of `true`- but it *doesn't* change the value of the prototype we're inheriting from. That's great, because it means we can make as many individual lightbulbs as we'd like without effecting the object we're inheriting from!
 
 Next, let's suppose we want a slightly different variant of our lightbulb. Maybe we want it to be *blue*. That's also super easy.
 
@@ -231,8 +235,9 @@ blueLightBulb.color // 'blue'
 
 Here we use Object.assign and:
 
-- Provide it a target object created using `Object.create`. That means the target object is now an object who's prototype object is `lightbulb`
-- Provide it with a source object containing the additional information we want on `blueLightBulb`
+- Provide it a target object created using `Object.create`. That means the target object is now an empty object who's prototype object is `lightbulb`
+- Provide it with a source object containing the additional information we want to assign to `blueLightBulb`
+- The properties of the source object get copied to the target object, and we now have a blue 'lightbulb' object.
 
 Finally, imagine we don't want just a simple variant of the base object `lightbulb`, but we want to create a new, but similar type of object with it. Perhaps an RGB lightbulb that allows us to change it's color whenever we want with a convenient method.
 
@@ -299,17 +304,28 @@ threeRoundRPS.playRound('rock') // ERROR: No more rounds to play!
 threeRoundRPS.getWinningPlayer() // someone...
 threeRoundRPS.reset()
 
-// Alternatively, we could use this object with Object.create to make many three-round games
+// Alternatively, we could pass this object to Object.create to create many individual three-round games
 const anotherThreeRoundRPS = Object.create(threeRoundRPS)
 ```
 
-Hopefully, this starts to highlight to you the *usefulness* of inheritance, and also the importance of having well thought-out interfaces. If we hadn't designed out base Rock Paper Scissors game the way we had, it may have been difficult to extend it's functionality when new features were required.
+Hopefully, this starts to highlight to you the *usefulness* of inheritance, and also the importance of having well thought-out interfaces. If we hadn't designed our base Rock Paper Scissors game the way we had, it may have been difficult to extend it's functionality when new features were required.
+
+You'll notice that our extension added some new properties to our object, but it didn't actually change how we interact with what was already there very much. This is an important detail to think about when extending objects into the future like this.
 
 ### A problem appears
 
-- This pattern can't easily be used to inherit the structure of objects containing data
+- While this pattern is pretty good for inheriting functionality, it can't easily be used to inherit the structure of objects containing data, and the objects can easily be misused if they are intended only to be used as a prototype object
+
 - This pattern can't easily be used as an interface for a 'collection'- if you try to push to an array in the prototype, the array will change for all inherited objects
+
+- This pattern could be improved by adding a `create` method to prototype objects allowing you to initialize properties
 
 ### More Content
 
 ~~This is the fundamental way that inheritance works in JavaScript. We encourage you to play around with with the concept, and experiment with how it works! The lesson has been pretty long and in-depth so far, and could have felt like a lot. Take a breather before moving on!~~
+
+### Knowledge Check
+
+The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
+
+- Some check
