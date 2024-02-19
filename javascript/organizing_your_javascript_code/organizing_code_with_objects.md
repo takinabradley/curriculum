@@ -103,9 +103,9 @@ The inroductory paragraph for Object Oriented Programming on Wikipedia says this
 
 Essentially, what this means is that code can be organized into objects that contain not only data, but also **methods** (or functions on an object) that interact with that data.
 
-Nearly *anything* you can think about can be described as an object. To do so, all you have to do is ask yourself is "What properties (physical or conceptual) does my thing have?", and "How can I interact with it?". The properties or attributtes of a *thing* are expressed as properties, and the ways you can interact with a thing are expressed as methods.
+Nearly *anything* you can think about can be described as an object. To do so, all you have to do is ask yourself is "What properties (physical or conceptual) does my thing have?", and "How can I interact with it?". The properties or attributes of a *thing* are expressed as properties, and the ways you can interact with that thing are expressed as methods.
 
-Let's take an example a thing- we'll choose a lightbulb. A lightbulb can have a color, and it can be in either an 'on' state, or an 'off' state. These might be expressed as properties of a lightbulb object:
+Let's take an example of some thing- we'll choose a lightbulb. A lightbulb can have a color, and it can be in either an 'on' state, or an 'off' state. These might be expressed as properties of a lightbulb object:
 
 ```js
 const lightbulb = {
@@ -114,9 +114,9 @@ const lightbulb = {
 }
 ```
 
-You may want to have the ability to switch a lightbulb to on from it's unlit state, or vice-versa. To do that, you might add methods to these objects to do that.
+You may want to have the ability to switch a lightbulb from it's unlit state to it's lit state, or vice-versa. To do that, you might add a *method*.
 
-The easiest way to get started using methods to interact with your objects might be combining Object Literal syntax with JavaScript's `this` keyword. The `this` keyword is used to refer to the object a particular method is called from.
+The easiest way to get started creating methods to interact with your objects might be combining Object Literal syntax with JavaScript's `this` keyword. The `this` keyword is used to refer to the object a particular method is called from.
 
 The following is an example of using the `this` keyword to add two methods to our object, `switchOn`, and `switchOff`:
 
@@ -137,9 +137,9 @@ const lightbulb = {
   switchOff() {
     // return true if the state of the light changed to be off
     if (this.lit === false) return false
-    this.lit = false
 
     // return false to indicate the light was already off
+    this.lit = false
     return true
   }
 }
@@ -148,31 +148,35 @@ lightbulb.switchOn() // true - we switched it on
 lightbulb.lit // true - the object has changed to reflect that!
 ```
 
-These methods use the `this` keyword to refer to the object they get called from. The `this` keyword can be used to access and modify properties of an object in exactly the same way you would for any other object.
+These methods use the `this` keyword to refer to the object they get called from (`lightbulb`). The `this` keyword can be used to access and modify properties of an object in exactly the same way you would for any other variable that points to an object.
 
 Feel free to copy this code in the console and experiment with it! If you're inclined, perhaps you could create a method to change the color of the light, as if it's one of those fancy RGB LEDs those gamer nerds and keyboard enthusiasts seem to like so much.
 
 Moving past physical objects, we could also try to describe something like a game as an object. Since we've already explored Rock Paper Scissors in Foundations, let's use that as an example.
 
-A rock paper scissors game might involve a few things:
+A rock paper scissors game might involve a couple basic things:
 
-- Properties that keep track of players' scores
-- A method that allows you to play a round with a computer player
-- A method that allows you to reset the game might also be a useful way to interact with the object.
+- Players' scores
+- The ability to play a round (and playing a round should update a player's score)
 
-So, at it's most basic, an object that represents the game might look something like this:
+And might also include a couple nice-to-haves
+
+- The ability to determine the current winning player
+- The ability to restart the game
+
+So, at it's most basic, an object that represents the game might look something like this (assuming we're playing against a comuter player):
 
 ```js
 const rps = {
   playerScore: 0,
   computerScore: 0,
   playRound(playerChoice) {
-    // code to play the round...
+    // code to play the round... (and update the scores when a player wins)
   }
 }
 ```
 
-If we wanted our game object to automatically keep score for us as we played the game, we might flesh this code out to look something like this:
+And if we fleshed it out, our object may come out to look something like this:
 
 ```js
 const rps = {
@@ -205,6 +209,15 @@ const rps = {
       return 'computer'
     }
   },
+  getWinningPlayer() {
+    if(this.playerScore === this.computerScore) {
+      return 'tie'
+    } else if (this.playerScore > this.computerScore) {
+      return 'player'
+    } else {
+      return 'computer'
+    }
+  },
   reset() {
     this.playerScore = 0;
     this.computerScore = 0;
@@ -214,8 +227,9 @@ const rps = {
 rps.playRound('rock') // returns 'player' if we win...
 rps.playerScore       // ...and our score would have increased
 
-// We also have the ability to reset the game at any time
-rps.reset()           
+// We also have the ability to check the winner and reset the game at any time
+rps.getWinningPlayer() // 'player', if we won above round
+rps.reset()
 ```
 
 You may be looking at this code and thinking that you personally prefer to split your code between more functions than you see here, but also recognize that those functions may not really be a useful interaction point for anyone using your object.
@@ -265,6 +279,15 @@ const rps = {
       return 'computer'
     }
   },
+  getWinningPlayer() {
+    if(this.playerScore === this.computerScore) {
+      return 'tie'
+    } else if (this.playerScore > this.computerScore) {
+      return 'player'
+    } else {
+      return 'computer'
+    }
+  },
   reset() {
     this.playerScore = 0;
     this.computerScore = 0;
@@ -274,9 +297,9 @@ const rps = {
 
 Another name for these might also be **private properties**/**private methods**, and even though object literal syntax doesn't provide a way to truly make them private, you will later learn about other methods of creating objects that *can*.
 
-Private properties/methods aren't strictly required, but they can help make the intended use of the object more understandable, and when used thoughtfully, even protect certain properties from being modified in ways that you may not have intended.
+Private properties/methods aren't strictly required, but they can help make the intended use of the object more understandable, and when used thoughtfully, even protect certain properties (like the player's scores) from being modified in ways that you may not have intended. Back off, cheaters!
 
-The methods and properties you *do* intend for others to use on your objects might be considered your object's **public interface**. Having a good, well thought out interface on your objects is important- not only because it makes your object pleasant to use by you and others, but also to keep objects flexible and extensible in the future (we'll touch on this later, when we talk about object inheritance).
+The methods and properties you *do* intend for others to use on your objects might be considered your object's **public interface**. Having a good, well thought out interface on your objects is important- not only because it makes your object pleasant to use by you and others, but also to keep objects flexible and extensible in the future.
 
 This idea of grouping related functionality within an object is *extremely powerful*, and can often result in more organized, understandable code.
 
@@ -286,11 +309,11 @@ Furthermore, with the various object creation methods you'll learn throughout th
 
 #### Objects As Machines
   
-When you want to organize some data and functionality together in this way, but you're having trouble figuring out what kinds of properties and methods an object might contain when it's not an actual, physical item, another way you might conceptualize this idea might be to imagine each object as a little 'machine' you're making out of code that does something useful.
+When you want to organize some data and functionality together in this way, but you're having trouble figuring out what kinds of properties and methods an object might contain when it's not an actual, physical item, another way you might conceptualize this idea might be to imagine the object as a little 'machine' you're making out of code that does something useful.
 
-The properties of the object might have basic information about your machine (like it's color), and additional information about it's current 'state', such as if the machine is currently on or off, what the machine has counted for a player's score, or how many coins havebeen inserted into your machine.
+The properties of the machine could be thought of displays that might show information it's collected or been given to it so far, if it can currently be interacted with, what the machine has counted for a player's score... or about a billion other things, depending on what your object does.
 
-The buttons and and such that make your machine do specific things would be represented by the the objects methods. A method might turn your machine from on 'on' to 'off', allow you to input information to play a game, or give the machine a coin so it can keep running (maybe your object represents an arcade game!).
+The methods of your machine might be akin to buttons and such that make the machinde *do* a specific thing. A method might give your object new information to store in some way, turn your machine from on 'on' to 'off', allow you to input information to play a game, or switch between the turns of two different players.
 
 Again, objects can be used to represent almost anything you can think of, the limit is your imagination! It's impossible for us to give a comprehensive list of examples.
 
